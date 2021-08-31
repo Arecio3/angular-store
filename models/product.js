@@ -20,4 +20,5 @@ const productSchema = mongoose.Schema({
   });
 
 // Define Model/Collection 
+// With this export method you must import as obj { }
 exports.Product = mongoose.model('Product', productSchema);

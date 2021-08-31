@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/product');
+const { Product } = require('../models/product');
 
 // Get Products asynchronously
 // When productList gets called it waits to be filled then gets sent

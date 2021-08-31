@@ -2,9 +2,12 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const cors = require('cors');
 require('dotenv/config');
-
-
+// enables cors (allows any app to request API from my server)
+app.use(cors());
+// "*" allows all other http request to be passed from any other origin
+app.options('*', cors())
 
 //-- Middleware--
 
