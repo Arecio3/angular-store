@@ -57,6 +57,14 @@ const productSchema = mongoose.Schema({
       default: Date.now
     }
   });
+// creates virtual id and gets the _id and uses toHexString because _id is an Obj ID we need a hex string  
+productSchema.virtual('id').get(function () {
+  return this._id.toHexString();
+});
+// Enables virtuals to be able to send value to frontend or API 
+productSchema.set('toJSON', {
+  virtuals: true,
+});
 
 // Define Model/Collection 
 // With this export method you must import as obj { }
