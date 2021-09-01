@@ -7,6 +7,12 @@ function authJwt() {
         // passes in secret to create token and checks
         secret,
         algorithms: ['HS256'] 
+    }).unless({
+        // Excluding API from being authenticated 
+        path: [
+            '/api/v1/users/login',
+            '/api/v1/users/register'
+        ]
     })
 }
 
