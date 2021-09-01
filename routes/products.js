@@ -7,10 +7,17 @@ const { Category } = require("../models/category");
 // Get Products asynchronously
 // When productList gets called it waits to be filled then gets sent
 router.get(`/`, async (req, res) => {
-  // finds all products in collection
-  // custom API
   // const productList = await Product.find().select('name image -_id');
-  const productList = await Product.find().populate("category");
+
+  // array of categories entered by user
+  let filter = {}
+  if(req.query.categories) {
+    // when there is a query sets category to query
+    // splits array so that it returns a string
+    filter = {category: req.query.categories.split(',')}
+  }
+  // finds all products in collection
+  const productList = await Product.find(filter).populate("category");
 
   if (!productList) {
     res.status(500).json({ success: false });
@@ -105,6 +112,7 @@ router.put("/:id", async (req, res) => {
   res.status(200).send(product);
 });
 
+// Delete product
 router.delete('/:id', async (req, res) => {
   Product.findByIdAndRemove(req.params.id).then(product => {
       if(product) {
@@ -118,6 +126,7 @@ router.delete('/:id', async (req, res) => {
   })
 })
 
+// Get count of how many products in db
 router.get(`/get/count`, async (req, res) => {
   // uses mongo method to get doc count and set doc count
   const productCount = await Product.countDocuments();
@@ -128,6 +137,19 @@ router.get(`/get/count`, async (req, res) => {
   res.send({
     productCount: productCount,
   });
+})
+
+// only gets a limited amount of featured products
+router.get(`/get/featured/:count`, async (req, res) => {
+  // sets default value to either param or 0 
+  const count = req.params.count ? req.params.count : 0
+  // gets only the products that have the correct paramater
+  const featuredProducts = await Product.find({isFeatured: true}).limit(+count);
+
+  if(!featuredProducts) {
+    res.status(500).json({success: false})
+  } 
+  res.send(featuredProducts);
 })
 
 module.exports = router;
