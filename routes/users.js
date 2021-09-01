@@ -120,7 +120,8 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign(
             {   
                 // You can pass data into token
-                userId: user.id,                
+                userId: user.id,
+                isAdmin: user.isAdmin                
             },
             // Secret (Password used to create token)
             secret,
@@ -157,5 +158,18 @@ router.post('/register', async (req, res) => {
     
         res.status(200).send(user)
 })
+
+// Get count of how many users in db
+router.get(`/get/count`, async (req, res) => {
+    // uses mongo method to get doc count and set doc count
+    const userCount = await User.countDocuments();
+  
+    if(!userCount) {
+      res.status(500).json({success: false})
+    } 
+    res.send({
+      userCount: userCount,
+    });
+  })
 
 module.exports = router;

@@ -7,7 +7,8 @@ function authJwt() {
     return expressJwt({
         // passes in secret to create token and checks
         secret,
-        algorithms: ['HS256'] 
+        algorithms: ['HS256'],
+        isRevoked: isRevoked
     }).unless({
         // Excluding API from HAVING to being authenticated 
         path: [
@@ -18,6 +19,15 @@ function authJwt() {
             `${api}/users/register`
         ]
     })
+}
+
+async function isRevoked(req, payload, done) {
+    if(!payload.isAdmin) {
+        // reject if user is not admin 
+        done(null, true)
+    }
+
+    done();
 }
 
 module.exports = authJwt;
