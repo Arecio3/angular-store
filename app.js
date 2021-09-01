@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const authJwt = require('./helpers/jwt');
+const errorHandler = require('./helpers/error-handler');
 require('dotenv/config');
 // enables cors (allows any app to request API from my server)
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(express.json());
 // Tells express to use morgan
 app.use(morgan('tiny'));
 app.use(authJwt());
+app.use(errorHandler);
 
 // Routes
 const categoriesRoute = require('./routes/categories');
