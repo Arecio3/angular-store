@@ -27,6 +27,7 @@ const usersRoute = require('./routes/users');
 const ordersRoute = require('./routes/orders');
 
 const api = process.env.API_URL;
+
 // Connecting Routes
 app.use(`${api}/products`, productsRoute);
 app.use(`${api}/categories`, categoriesRoute);
