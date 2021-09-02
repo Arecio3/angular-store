@@ -8,7 +8,7 @@ router.get(`/`, async (req, res) => {
   // populate user table with only the name and sorts from newest to oldest
   const orderList = await Order.find()
     .populate("user", "name")
-    .sort({ dateOrdered: -1 });
+    .sort({ 'dateOrdered': -1 });
 
   if (!orderList) {
     res.status(500).json({ success: false });
@@ -159,5 +159,20 @@ router.get(`/get/count`, async (req, res) => {
     orderCount: orderCount,
   });
 })
+
+// Get specific user orders
+router.get(`/get/userorders/:userid`, async (req, res) => {
+  // populate user table with only the name and sorts from newest to oldest
+  const userOrderList = await Order.find({user: req.params.userid})
+  .populate({
+    path: "orderItems",populate: {
+      path: "product", populate: "category",}
+    }).sort({ 'dateOrdered': -1 });
+
+  if (!userOrderList) {
+    res.status(500).json({ success: false });
+  }
+  res.send(userOrderList);
+});
 
 module.exports = router;
