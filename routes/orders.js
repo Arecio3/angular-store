@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 
 // Get Orders
-router.get("/", async (req, res) => {
+router.get(`/`, async (req, res) => {
   // populate user table with only the name and sorts from newest to oldest
   const orderList = await Order.find()
     .populate("user", "name")
@@ -52,7 +52,24 @@ router.post("/", async (req, res) => {
       return newOrderItem._id;
     })
   );
+  // sets ids that passed check = orderItemsIdsResolved
   const orderItemsIdsResolved = await orderItemsIds;
+
+  const totalPrices = await Promise.all(
+    orderItemsIdsResolved.map(async (orderItemId) => {
+      // gets prices of orderItem products
+      const orderItem = await OrderItem.findById(orderItemId).populate('product','price');
+      // multiplys product price by it's quantity
+      const totalPrice = orderItem.product.price * orderItem.quantity;
+
+      return totalPrice
+    })
+  );
+
+  // console.log(totalPrices);
+  // adds prices together
+  const totalPrice = totalPrices.reduce((a,b) => a + b , 0);
+
   // Creates new model with value from body
   let order = new Order({
     // sets most current orderItems
@@ -64,7 +81,7 @@ router.post("/", async (req, res) => {
     country: req.body.country,
     phone: req.body.phone,
     status: req.body.status,
-    totalPrice: req.body.totalPrice,
+    totalPrice: totalPrice,
     user: req.body.user,
   });
   // waits until order saves then returns a promise with the doc
@@ -76,37 +93,42 @@ router.post("/", async (req, res) => {
 });
 
 // Delete Order and OrderItems associated with order
-router.delete('/:id', (req, res)=>{
-    Order.findByIdAndRemove(req.params.id).then(async order =>{
-        // after order deleted
-        if(order) {
-            // map over orderItems get every orderItem and delete
-            await order.orderItems.map(async orderItem => {
-                await OrderItem.findByIdAndRemove(orderItem)
-            })
-            return res.status(200).json({success: true, message: 'the order is deleted!'})
-        } else {
-            return res.status(404).json({success: false , message: "order not found!"})
-        }
-    }).catch(err=>{
-       return res.status(500).json({success: false, error: err}) 
+router.delete("/:id", (req, res) => {
+  Order.findByIdAndRemove(req.params.id)
+    .then(async (order) => {
+      // after order deleted
+      if (order) {
+        // map over orderItems get every orderItem and delete
+        await order.orderItems.map(async (orderItem) => {
+          await OrderItem.findByIdAndRemove(orderItem);
+        });
+        return res
+          .status(200)
+          .json({ success: true, message: "the order is deleted!" });
+      } else {
+        return res
+          .status(404)
+          .json({ success: false, message: "order not found!" });
+      }
     })
-})
+    .catch((err) => {
+      return res.status(500).json({ success: false, error: err });
+    });
+});
 
 // Update Order
 router.put("/:id", async (req, res) => {
-
   const order = await Order.findByIdAndUpdate(
     req.params.id,
     {
       // contains updated data
-      status: req.body.status
+      status: req.body.status,
     },
     // Option to show updated doc
     { new: true }
   );
 
-  if (!order) return res.status(400).send('The order was not found');
+  if (!order) return res.status(400).send("The order was not found");
 
   res.status(200).send(order);
 });
