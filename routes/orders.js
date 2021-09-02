@@ -133,4 +133,31 @@ router.put("/:id", async (req, res) => {
   res.status(200).send(order);
 });
 
+// Get amount of all sales
+router.get('/get/totalsales', async (req, res) => {
+    const totalSales = await Order.aggregate([
+      // grouping tables and adding up all totalPrices and setting it = totalSales
+      { $group: { _id: null, totalSales: { $sum: '$totalPrice'}}}
+    ])
+
+    if(!totalSales) {
+      return res.status(400).send("The order sales couldn't be generated")
+    }
+
+    res.send({totalSales: totalSales.pop().totalSales})
+})
+
+// Get how many orders are made
+router.get(`/get/count`, async (req, res) => {
+  // uses mongo method to get doc count and set doc count
+  const orderCount = await Order.countDocuments();
+
+  if(!orderCount) {
+    res.status(500).json({success: false})
+  } 
+  res.send({
+    orderCount: orderCount,
+  });
+})
+
 module.exports = router;
