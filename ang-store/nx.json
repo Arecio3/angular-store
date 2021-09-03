@@ -40,6 +40,9 @@
         "e-shop-e2e": {
             "tags": [],
             "implicitDependencies": ["e-shop"]
+        },
+        "ui": {
+            "tags": []
         }
     }
 }

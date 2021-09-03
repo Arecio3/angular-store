@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ProductListComponent } from './pages/product-list/product-list.component';
+import { HeaderComponent } from './shared/header/header.component';
+import { FooterComponent } from './shared/footer/footer.component';
 
 // Route Paths
 const routes: Routes = [
@@ -17,7 +18,7 @@ const routes: Routes = [
 
 @NgModule({
   // All Project Components
-  declarations: [AppComponent, HomePageComponent, ProductListComponent],
+  declarations: [AppComponent, HomePageComponent, ProductListComponent, HeaderComponent, FooterComponent],
   imports: [BrowserModule, RouterModule.forRoot(routes)],
   providers: [],
   bootstrap: [AppComponent],
