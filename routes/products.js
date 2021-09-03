@@ -3,6 +3,39 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const { Product } = require("../models/product");
 const { Category } = require("../models/category");
+const multer = require("multer");
+
+// List of acceptabele file extensions
+const FILE_TYPE_MAP = {
+    // defines file type (MIME type format) 
+    'image/png': 'png',
+    'image/jpg': 'jpg',
+    'image/jpeg': 'jpeg'
+}
+
+// The disk storage engine gives you full control on storing files to disk.
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const isValidFile = FILE_TYPE_MAP[file.mimetype];
+    let uploadError = new Error('Invalid Image file type');
+
+    if(isValidFile) {
+      uploadError = null
+    }
+    // gets returned if theres an error uploading 
+    cb(uploadError, 'public/uploads')
+  },
+  filename: function (req, file, cb) {
+    // creates unique filename, replaces spaces with a - 
+    const fileName = file.originalname.replace(' ', '-');
+    // assigns mimetype as extension
+    const extension = FILE_TYPE_MAP[file.mimetype];
+    // takes filename and adds '-dateCreated'
+    cb(null, `${fileName}-${Date.now()}.${extension}`)
+  }
+})
+
+const uploadOptions = multer({ storage: storage })
 
 // Get Products asynchronously
 // When productList gets called it waits to be filled then gets sent
@@ -44,15 +77,17 @@ router.get(`/:id`, async (req, res) => {
 });
 
 // Post a new prodcut
-router.post(`/`, async (req, res) => {
+router.post(`/`, uploadOptions.single('image'), async (req, res) => {
   // validate category has not already been created
-  const category = await Category.findById(req.params.category);
+  const category = await Category.findById(req.body.category);
   if (!category) return res.status(400).send("Invalid Category");
-
-  const product = new Product({
-    // Grabbing values and assiging to model
+  // grabs multer filename
+  const fileName = req.file.filename
+  // backend url
+  const basePath = `${req.protocol}://${req.get('host')}/public/uploads`;
+  let product = new Product({
     name: req.body.name,
-    image: req.body.image,
+    image: `${basePath}${fileName}`, // "http://localhost:3000/public/uploads/filename"
     countInStock: req.body.countInStock,
     description: req.body.description,
     richDescription: req.body.richDescription,
