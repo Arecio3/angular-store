@@ -17,8 +17,11 @@ app.options('*', cors())
 app.use(express.json());
 // Tells express to use morgan
 app.use(morgan('tiny'));
+// Tells express to use json web token
 app.use(authJwt());
 app.use(errorHandler);
+// tells express to treat as static file
+app.use('/public/uploads', express.static(__dirname + '/public/uploads'));
 
 // Routes
 const categoriesRoute = require('./routes/categories');

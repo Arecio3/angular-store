@@ -10,11 +10,12 @@ function authJwt() {
         algorithms: ['HS256'],
         isRevoked: isRevoked
     }).unless({
-        // Excluding API from HAVING to being authenticated 
+        // Excluding API paths from HAVING to being authenticated 
         path: [
             // targets anything after products (regex)
-            {url: /\/api\/v1\/products(.*)/, methods: ['GET', 'OPTIONS']},
-            {url: /\/api\/v1\/categories(.*)/, methods: ['GET', 'OPTIONS']},
+            { url: /\/public\/uploads(.*)/, methods: ['GET', 'OPTIONS'] },
+            { url: /\/api\/v1\/products(.*)/, methods: ['GET', 'OPTIONS'] },
+            { url: /\/api\/v1\/categories(.*)/, methods: ['GET', 'OPTIONS'] },
             `${api}/users/login`,
             `${api}/users/register`
         ]
