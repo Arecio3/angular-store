@@ -42,13 +42,13 @@ router.post("/", async (req, res) => {
   // waits until user saves then returns a promise with the doc
   user = await user.save();
   // Checks if there is a user filled
-  if (!user) return res.status(404).send("The user cannot be created!");
+  if (!user) return res.status(400).send("The user cannot be created!");
 
   res.send(user);
 });
 
 // Delete User (Promise way)
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", (req, res) => {
   User.findByIdAndRemove(req.params.id)
     .then((user) => {
       if (user) {
@@ -63,7 +63,7 @@ router.delete("/:id", async (req, res) => {
     })
     .catch((err) => {
       // Connection error / wrong id
-      return res.status(400).json({ success: false, error: err });
+      return res.status(500).json({ success: false, error: err });
     });
 });
 
@@ -71,7 +71,7 @@ router.delete("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
     // Checks db if password exist
   const userExist = await User.findById(req.params.id);
-
+  let newPassword
   if (req.body.password) {
     // If there is a value in the body set that to newPassword
     newPassword = bcrypt.hashSync(req.body.password, 10);
@@ -142,7 +142,7 @@ router.post('/register', async (req, res) => {
     let user = new User({
         name: req.body.name,
         email: req.body.email,
-        passwordHash: newPassword,
+        passwordHash: bcrypt.hashSync(req.body.password, 10),
         phone: req.body.phone,
         street: req.body.street,
         apartment: req.body.apartment,
@@ -168,8 +168,8 @@ router.get(`/get/count`, async (req, res) => {
       res.status(500).json({success: false})
     } 
     res.send({
-      userCount: userCount,
+      userCount: userCount
     });
-  })
+})
 
 module.exports = router;

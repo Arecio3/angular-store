@@ -8,7 +8,7 @@ router.get(`/`, async (req, res) => {
   // populate user table with only the name and sorts from newest to oldest
   const orderList = await Order.find()
     .populate("user", "name")
-    .sort({ 'dateOrdered': -1 });
+    .sort({ dateOrdered: -1 });
 
   if (!orderList) {
     res.status(500).json({ success: false });
@@ -89,7 +89,7 @@ router.post("/", async (req, res) => {
   // Checks if there is a category filled
   if (!order) return res.status(404).send("The order cannot be created!");
 
-  res.send(order);
+  res.status(200).send(order);
 });
 
 // Delete Order and OrderItems associated with order
@@ -130,22 +130,22 @@ router.put("/:id", async (req, res) => {
 
   if (!order) return res.status(400).send("The order was not found");
 
-  res.status(200).send(order);
+  res.send(order);
 });
 
 // Get amount of all sales
 router.get('/get/totalsales', async (req, res) => {
     const totalSales = await Order.aggregate([
       // grouping tables and adding up all totalPrices and setting it = totalSales
-      { $group: { _id: null, totalSales: { $sum: '$totalPrice'}}}
-    ])
+      { $group: { _id: null, totalSales: { $sum: '$totalPrice'} } },
+    ]);
 
     if(!totalSales) {
-      return res.status(400).send("The order sales couldn't be generated")
+      return res.status(400).send("The order sales couldn't be generated");
     }
 
-    res.send({totalSales: totalSales.pop().totalSales})
-})
+    res.send({ totalSales: totalSales.pop().totalSales });
+});
 
 // Get how many orders are made
 router.get(`/get/count`, async (req, res) => {
@@ -153,12 +153,12 @@ router.get(`/get/count`, async (req, res) => {
   const orderCount = await Order.countDocuments();
 
   if(!orderCount) {
-    res.status(500).json({success: false})
+    res.status(500).json({ success: false });
   } 
   res.send({
     orderCount: orderCount,
   });
-})
+});
 
 // Get specific user orders
 router.get(`/get/userorders/:userid`, async (req, res) => {
@@ -166,8 +166,9 @@ router.get(`/get/userorders/:userid`, async (req, res) => {
   const userOrderList = await Order.find({user: req.params.userid})
   .populate({
     path: "orderItems",populate: {
-      path: "product", populate: "category",}
-    }).sort({ 'dateOrdered': -1 });
+      path: "product", populate: "category",
+    },
+    }).sort({ dateOrdered: -1 });
 
   if (!userOrderList) {
     res.status(500).json({ success: false });
