@@ -1,6 +1,12 @@
 # ui
 
-This library was generated with [Nx](https://nx.dev).
+This library contains the UI components which are used in the store
+
+# Banner
+
+# Slider
+
+# Stepper
 
 ## Running unit tests
 

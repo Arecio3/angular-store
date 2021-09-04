@@ -41,7 +41,16 @@
             "tags": [],
             "implicitDependencies": ["e-shop"]
         },
+        "orders": {
+            "tags": []
+        },
+        "products": {
+            "tags": []
+        },
         "ui": {
+            "tags": []
+        },
+        "users": {
             "tags": []
         }
     }
