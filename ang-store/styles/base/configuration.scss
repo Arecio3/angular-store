@@ -1,5 +1,7 @@
-body {
+// p is the entry point for the fonts of prime-ng
+body, .p-component {
     font-family: 'Poppins', sans-serif;
+    font-size: 14px;
 }
 
 a {
