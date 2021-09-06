@@ -16,10 +16,10 @@ const routes: Routes = [
             {
                 path: 'dashboard',
                 component: DashboardComponent,
-            }
-        ]
-    }
-]
+            },
+        ],
+    },
+];
 
 @NgModule({
     declarations: [AppComponent, DashboardComponent, ShellComponent, SidebarComponent],
