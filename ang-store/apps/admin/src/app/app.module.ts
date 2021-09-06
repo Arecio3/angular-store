@@ -14,8 +14,10 @@ import {CardModule} from 'primeng/card';
 import {ToolbarModule} from 'primeng/toolbar';
 import {ButtonModule} from 'primeng/button';
 import {TableModule} from 'primeng/table';
+import { CategoriesFormComponent } from './categories/categories-form/categories-form.component';
+import {InputTextModule} from 'primeng/inputtext';
 
-const UX_MODULE = [CardModule, ToolbarModule, ButtonModule, TableModule]
+const UX_MODULE = [CardModule, ToolbarModule, ButtonModule, TableModule, InputTextModule]
 
 // Set up route for component
 const routes: Routes = [
@@ -31,13 +33,17 @@ const routes: Routes = [
                 path: 'categories',
                 component: CategoriesListComponent,
             },
+            {
+                path: 'categories/form',
+                component: CategoriesFormComponent,
+            },
         ],
     },
 ];
 
 @NgModule({
-    declarations: [AppComponent, DashboardComponent, ShellComponent, SidebarComponent, CategoriesListComponent],
-    imports: [BrowserModule, HttpClientModule, RouterModule.forRoot(routes, { initialNavigation: 'enabledBlocking' }), ...UX_MODULE],
+    declarations: [AppComponent, DashboardComponent, ShellComponent, SidebarComponent, CategoriesListComponent, CategoriesFormComponent],
+    imports: [BrowserModule, HttpClientModule, RouterModule.forRoot(routes, { initialNavigation: 'enabledBlocking' }), ...UX_MODULE,],
     providers: [CategoriesService],
     bootstrap: [AppComponent]
 })
