@@ -16,7 +16,6 @@
             <p-table [value]="categories" responsiveLayout="scroll" styleClass="p-datatable-gridlines">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>ID</th>
                         <th>Name</th>
                         <th>Icon</th>
                         <th>Color</th>
@@ -25,10 +24,9 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-category>
                     <tr>
-                        <td>{{category.id}}</td>
-                        <td>{{category.name}}</td>
-                        <td>{{category.icon}}</td>
-                        <td>{{category.color}}</td>
+                        <td>{{ category.name }}</td>
+                        <td><i style="font-size: 1.5rem" class="pi" [ngClass]="'pi-'+ category.icon"></i></td>
+                        <td>{{ category.color }}</td>
                         <td>
                             <!-- Delete Button -->
                             <p-button (click)="deleteCategory(category.id)" styleClass="p-button-danger mr-3" icon="pi pi-trash"></p-button>
