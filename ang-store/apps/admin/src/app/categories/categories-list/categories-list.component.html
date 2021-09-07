@@ -1,10 +1,11 @@
+<p-toast></p-toast>
 <div class="admin-page">
     <p-card header="Categories" subheader="List of Categories">
        <div class="grid">
             <div class="col-12">
                 <p-toolbar>
                     <div class="p-toolbar-group-left">
-                        <p-button styleClass="p-button-success" label="New" icon="pi pi-plus" class="p-button-success" routerLink ="form"></p-button>
+                        <p-button styleClass="p-button-success" label="New" icon="pi pi-plus" routerLink ="form"></p-button>
                     </div>
                 </p-toolbar>
             </div>
@@ -18,6 +19,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Icon</th>
+                        <th></th>
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-category>
@@ -25,6 +27,11 @@
                         <td>{{category.id}}</td>
                         <td>{{category.name}}</td>
                         <td>{{category.icon}}</td>
+                        <td>
+                            <!-- Delete Button -->
+                            <p-button (click)="deleteCategory(category.id)" styleClass="p-button-danger mr-3" icon="pi pi-trash"></p-button>
+                            <p-button styleClass="p-button-info" icon="pi pi-pencil"></p-button>
+                        </td>
                     </tr>
                 </ng-template>
             </p-table>
