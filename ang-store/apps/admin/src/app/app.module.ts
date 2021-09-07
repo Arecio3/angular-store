@@ -10,7 +10,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ShellComponent } from './shared/shell/shell.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { CategoriesListComponent } from './categories/categories-list/categories-list.component';
-import { CategoriesService } from '@ang-store/products'
+import { CategoriesService } from '@ang-store/products';
 import { CategoriesFormComponent } from './categories/categories-form/categories-form.component';
 
 import {CardModule} from 'primeng/card';
@@ -19,10 +19,10 @@ import {ButtonModule} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 import {InputTextModule} from 'primeng/inputtext';
 import {ToastModule} from 'primeng/toast';
-import {MessageService} from 'primeng/api';
+import {MessageService, ConfirmationService} from 'primeng/api';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
-
-const UX_MODULE = [CardModule, ToolbarModule, ButtonModule, TableModule, InputTextModule, ToastModule];
+const UX_MODULE = [CardModule, ToolbarModule, ButtonModule, TableModule, InputTextModule, ToastModule, ConfirmDialogModule];
 
 // Set up route for component
 const routes: Routes = [
@@ -49,7 +49,7 @@ const routes: Routes = [
 @NgModule({
     declarations: [AppComponent, DashboardComponent, ShellComponent, SidebarComponent, CategoriesListComponent, CategoriesFormComponent],
     imports: [BrowserModule, BrowserAnimationsModule, HttpClientModule, FormsModule, ReactiveFormsModule, RouterModule.forRoot(routes, { initialNavigation: 'enabledBlocking' }), ...UX_MODULE,],
-    providers: [CategoriesService, MessageService],
+    providers: [CategoriesService, MessageService, ConfirmationService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

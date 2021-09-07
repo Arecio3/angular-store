@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoriesService, Category } from '@ang-store/products';
-import {MessageService} from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'admin-categories-list',
@@ -12,21 +12,30 @@ export class CategoriesListComponent implements OnInit {
 
   categories: Category[] = [];
 
-  constructor(private categoriesService: CategoriesService, private messageService: MessageService) { }
+  constructor(private categoriesService: CategoriesService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   ngOnInit(): void {
     this._getCategories()
   }
 
   deleteCategory(categoryId : string) {
-    this.categoriesService.deleteCategory(categoryId).subscribe(_response => {
-      // refresh 
-      this._getCategories()
-      this.messageService.add({severity:'success', summary:'Success', detail:'Category deleted!'});
-    }, 
-    (_error) => {
-      this.messageService.add({severity:'error', summary:'Error', detail:'Category was not deleted!'});
-    })
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to DELETE this category?',
+      header: 'Delete Category',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.categoriesService.deleteCategory(categoryId).subscribe(_response => {
+          // refresh 
+          this._getCategories()
+          this.messageService.add({severity:'success', summary:'Success', detail:'Category deleted!'});
+        }, 
+        (_error) => {
+          this.messageService.add({severity:'error', summary:'Error', detail:'Category was not deleted!'});
+        })
+      },
+      reject: () => {}
+  });
+
   }
 
   private _getCategories() {
