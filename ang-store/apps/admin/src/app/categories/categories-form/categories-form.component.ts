@@ -16,6 +16,7 @@ export class CategoriesFormComponent implements OnInit {
   form!: FormGroup;
   isSubmitted = false;
   editmode = false;
+  currentCategoryID = '';
 
   constructor(private location: Location, private messageService: MessageService, private formBuilder: FormBuilder, private categoriesService: CategoriesService, private route: ActivatedRoute) { }
 
@@ -35,9 +36,19 @@ export class CategoriesFormComponent implements OnInit {
       return;
     }
     const category: Category = {
+      id:   this.currentCategoryID,
       name: this.categoryForm.name.value,
       icon: this.categoryForm.icon.value
     };
+
+    if(this.editmode) {
+      this._updateCategory(category)
+    } else {
+      this._addCategory(category)
+    }
+  }
+
+  private _addCategory(category: Category) {
     this.categoriesService.createCategory(category).subscribe(_response => {
       this.messageService.add({severity:'success', summary:'Success', detail:'Woo! Category was created!'});
       timer(1500).toPromise().then(() => {
@@ -48,12 +59,25 @@ export class CategoriesFormComponent implements OnInit {
       this.messageService.add({severity:'error', summary:'Error', detail:'Category was not created'});
     });
   }
-
+  // Add Category
+  private _updateCategory(category: Category) {
+    this.categoriesService.updateCategory(category).subscribe(_response => {
+      this.messageService.add({severity:'info', summary:'Success', detail:'Category Updated!'});
+      timer(1500).toPromise().then(() => {
+        this.location.back();
+      })
+    }, 
+    (_error) => {
+      this.messageService.add({severity:'error', summary:'Error', detail:'Category was not updated!'});
+    });
+  }
+  // Check if its on edit mode
   private _checkEditMode() {
     // Checks if URL has the id
     this.route.params.subscribe(params => {
       if(params.id) {
         this.editmode = true;
+        this.currentCategoryID = params.id;
         //  Grabs old values with controls
         this.categoriesService.getCategory(params.id).subscribe(category => {
           this.categoryForm.name.setValue(category.name);

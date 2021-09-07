@@ -21,6 +21,10 @@ export class CategoriesService {
   createCategory(category: Category): Observable<Category> {
     return this.http.post<Category>('http://localhost:3000/api/v1/categories/', category);
   }
+
+  updateCategory(category: Category): Observable<Category> {
+    return this.http.put<Category>(`http://localhost:3000/api/v1/categories/${category.id}`, category);
+  }
   // Backend we pass the id to URL
   // eslint-disable-next-line @typescript-eslint/ban-types
   deleteCategory(categoryId: string): Observable<Object> {
