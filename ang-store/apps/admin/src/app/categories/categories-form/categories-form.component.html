@@ -28,6 +28,10 @@
                             <input formControlName="icon" id="icon" type="text" pInputText> 
                             <small *ngIf="categoryForm.icon.invalid && isSubmitted" class="p-error">Oops! You forgot your Icon</small>
                         </div>
+                        <div class="field col">
+                            <label for="color" class="mr-2">Color</label><br>
+                            <p-colorPicker  formControlName="color"></p-colorPicker>
+                        </div>
                     </div>
                 </form>
            </div>

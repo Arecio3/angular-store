@@ -21,8 +21,9 @@ import {InputTextModule} from 'primeng/inputtext';
 import {ToastModule} from 'primeng/toast';
 import {MessageService, ConfirmationService} from 'primeng/api';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ColorPickerModule} from 'primeng/colorpicker';
 
-const UX_MODULE = [CardModule, ToolbarModule, ButtonModule, TableModule, InputTextModule, ToastModule, ConfirmDialogModule];
+const UX_MODULE = [CardModule, ToolbarModule, ButtonModule, TableModule, InputTextModule, ToastModule, ConfirmDialogModule, ColorPickerModule];
 
 // Set up route for component
 const routes: Routes = [

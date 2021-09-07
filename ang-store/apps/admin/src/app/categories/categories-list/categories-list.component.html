@@ -19,6 +19,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Icon</th>
+                        <th>Color</th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -27,6 +28,7 @@
                         <td>{{category.id}}</td>
                         <td>{{category.name}}</td>
                         <td>{{category.icon}}</td>
+                        <td>{{category.color}}</td>
                         <td>
                             <!-- Delete Button -->
                             <p-button (click)="deleteCategory(category.id)" styleClass="p-button-danger mr-3" icon="pi pi-trash"></p-button>
