@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CategoriesService, Category } from '@ang-store/products';
 
 @Component({
   selector: 'admin-categories-form',
@@ -10,11 +11,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CategoriesFormComponent implements OnInit {
   form!: FormGroup;
   isSubmitted = false;
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private categoriesService: CategoriesService) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      catname:['', Validators.required],
+      name:['', Validators.required],
       icon: ['', Validators.required]
     });
   }
@@ -25,8 +26,11 @@ export class CategoriesFormComponent implements OnInit {
     if(this.form.invalid) {
       return;
     }
-    console.log(this.categoryForm.catname.value);
-    console.log(this.categoryForm.icon.value);
+    const category: Category = {
+      name: this.categoryForm.name.value,
+      icon: this.categoryForm.icon.value
+    };
+    this.categoriesService.createCategory(category).subscribe();
   }
 
   get categoryForm() {

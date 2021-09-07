@@ -17,9 +17,9 @@
                 <form [formGroup]="form">
                     <div class="p-fluid p-formgrid grid">
                         <div class="field col">
-                            <label for="catname">Category Name </label>
-                            <input formControlName="catname" id="catname" type="text" pInputText>
-                            <small *ngIf="categoryForm.catname.invalid && isSubmitted" class="p-error">Oops! You forgot your Category name</small>
+                            <label for="name">Category Name </label>
+                            <input formControlName="name" id="name" type="text" pInputText>
+                            <small *ngIf="categoryForm.name.invalid && isSubmitted" class="p-error">Oops! You forgot your Category name</small>
                         </div>
                         <div class="field col">
                             <label for="icon">Icon</label>
