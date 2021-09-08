@@ -18,7 +18,8 @@
             "@ang-store/orders": ["libs/orders/src/index.ts"],
             "@ang-store/products": ["libs/products/src/index.ts"],
             "@ang-store/ui": ["libs/ui/src/index.ts"],
-            "@ang-store/users": ["libs/users/src/index.ts"]
+            "@ang-store/users": ["libs/users/src/index.ts"],
+            "@env/*": ["environments/*"]
         }
     },
     "exclude": ["node_modules", "tmp"]
