@@ -22,6 +22,8 @@ import {ToastModule} from 'primeng/toast';
 import {MessageService, ConfirmationService} from 'primeng/api';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ColorPickerModule} from 'primeng/colorpicker';
+import { ProductsListComponent } from './pages/products/products-list/products-list.component';
+import { ProductsFormComponent } from './pages/products/products-form/products-form.component';
 
 const UX_MODULE = [CardModule, ToolbarModule, ButtonModule, TableModule, InputTextModule, ToastModule, ConfirmDialogModule, ColorPickerModule];
 
@@ -46,13 +48,25 @@ const routes: Routes = [
             {
                 path: 'categories/form/:id',
                 component: CategoriesFormComponent,
+            },
+            {
+                path: 'products',
+                component: ProductsListComponent,
+            },
+            {
+                path: 'products/form',
+                component: ProductsFormComponent,
+            },
+            {
+                path: 'products/form/:id',
+                component: ProductsFormComponent
             }
         ],
     },
 ];
 
 @NgModule({
-    declarations: [AppComponent, DashboardComponent, ShellComponent, SidebarComponent, CategoriesListComponent, CategoriesFormComponent],
+    declarations: [AppComponent, DashboardComponent, ShellComponent, SidebarComponent, CategoriesListComponent, CategoriesFormComponent, ProductsListComponent, ProductsFormComponent],
     imports: [BrowserModule, BrowserAnimationsModule, HttpClientModule, FormsModule, ReactiveFormsModule, RouterModule.forRoot(routes, { initialNavigation: 'enabledBlocking' }), ...UX_MODULE,],
     providers: [CategoriesService, MessageService, ConfirmationService],
     bootstrap: [AppComponent]
