@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 export class CategoriesFormComponent implements OnInit {
   form!: FormGroup;
   isSubmitted = false;
+  isCanceled = false;
   editmode = false;
   currentCategoryID = '';
 
@@ -48,6 +49,11 @@ export class CategoriesFormComponent implements OnInit {
     } else {
       this._addCategory(category)
     }
+  }
+
+  onCancel() {
+    this.isCanceled = true;
+    this.location.back();
   }
 
   private _addCategory(category: Category) {
